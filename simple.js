@@ -24,15 +24,27 @@ const logN = (n) => {
 }
 
 
+/**
+ * 二项分布概率
+ * @param {int} N 试验次数
+ * @param {int} k 事件发生的次数
+ * @param {double} p 事件发生的概率
+ */
+let count = 0
+let result = {}
 
-const checkPhone = (phone) => {
-    console.log(phone)
-    var reg = /^1[0-9]{10}$/
-    return reg.test(phone)
+const binomial = (N, k, p) => {
+  ++count
+  if (N === 0 && k ===0) return 1.0
+  if (N < 0 || k < 0) return 0.0
+  if (!result[`N-${N}k-${k}`]) {
+    result[`N-${N}k-${k}`] = (1.0 - p)*binomial(N-1, k, p) + p*binomial(N-1, k-1, p)
+  }
+  return result[`N-${N}k-${k}`]
+
+    // return (1.0 - p)*binomial(N-1, k, p) + p*binomial(N-1, k-1, p)
 }
 
-console.log(checkPhone(151))
-console.log(checkPhone(25158114927))
-console.log(checkPhone(151581149271))
-console.log(checkPhone(1234567890))
-console.log(checkPhone(15158114927))
+console.log("---", binomial(10, 5, 0.25))
+console.log(count)
+console.log(result)
